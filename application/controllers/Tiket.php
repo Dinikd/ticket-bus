@@ -55,6 +55,7 @@ class Tiket extends CI_Controller {
 		$this->load->view('frontend/cekjadwal',$data);
 
 	}
+	//bagian 
 	public function beforebeli($jadwal="",$asal='',$tanggal=''){
 		$array = array(
 			'jadwal' => $jadwal,

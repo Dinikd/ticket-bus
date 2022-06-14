@@ -62,7 +62,7 @@ class Login extends CI_Controller {
 			redirect('login');
 		}
 	}
-
+	//function dan validasi daftar
 	public function daftar(){
 		$this->form_validation->set_rules('nomor', 'Nomor', 'trim|required|is_unique[tbl_pelanggan.telpon_pelanggan]',array(
 			'required' => 'Nomor HP Wajib Di isi !',

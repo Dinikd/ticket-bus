@@ -35,17 +35,23 @@ class Profile extends CI_Controller {
 		$data['tiket'] = $this->db->query("SELECT * FROM tbl_order WHERE kd_pelanggan ='".$id."' group by kd_order")->result_array();
 		$this->load->view('frontend/tiketmu',$data);
 	}
+
+	//change password
 	public function changepassword($id=''){
 		$this->load->library('form_validation');
 		$pelanggan = $this->db->query("SELECT password_pelanggan FROM tbl_pelanggan where kd_pelanggan ='".$id."'")->row_array();
 		$this->form_validation->set_rules('currentpassword', 'currentpassword', 'trim|required|min_length[8]',array(
 			'required' => 'Masukan Password',
 			 ));
+
+			 //validasi password baru
 		$this->form_validation->set_rules('new_password1', 'new_password1', 'trim|required|min_length[8]|matches[new_password2]',array(
 			'required' => 'Masukan Password.',
 			'matches' => 'Password Tidak Sama.',
 			'min_length' => 'Password Minimal 8 Karakter.'
 			 ));
+
+			 //validasi ulang password
 		$this->form_validation->set_rules('new_password2', 'new_password2', 'trim|required|min_length[8]|matches[new_password1]',array(
 			'required' => 'Masukan Password.',
 			'matches' => 'Password Tidak Sama.',
@@ -53,12 +59,14 @@ class Profile extends CI_Controller {
 			 ));
 		if ($this->form_validation->run() == false) {
 			$this->load->view('frontend/changepassword');
-		} else {
+		} 
+			//validasi password sebelumnya salah
+			else {
 			$currentpassword = $this->input->post('currentpassword');
 			$newpassword 	 = $this->input->post('new_password1');
 			if (!password_verify($currentpassword, $pelanggan['password_pelanggan'])) {
-				$this->session->set_flashdata('gagal', '<div class="alert alert-danger" role="alert">
-					  Password Sebelumnya Salah
+				$this->session->set_flashdata('gagal', '<div class="alert alert-danger" role="alert"> 
+					  Password Sebelumnya Salah 
 					</div>');
 				redirect('profile/changepassword');
 			}elseif ($currentpassword == $newpassword) {
@@ -72,7 +80,7 @@ class Profile extends CI_Controller {
 				$update = array(
 				'password_pelanggan'			=> $password_hash,
 				 );
-				$this->db->update('tbl_pelanggan', $update,$where);
+				$this->db->update('tbl_pelanggan', $update,$where); //database update di tabel pelanggan
 				$this->session->set_flashdata('message', 'swal("Berhasil", "Data Di Edit", "success");');
 				redirect('profile/profilesaya/'.$id);
 			}
